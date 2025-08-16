@@ -21,10 +21,9 @@ public class InventoryListener implements Listener {
 
         LanguageManager languageManager = SmasherMCLanguageAPI.getLanguageManager();
 
-        // Korrigierte Zeile - entferne "messages." da es bereits im LanguageManager hinzugefügt wird
         String expectedTitle = languageManager.getMessage(player, "inventory-title");
 
-        if (event.getView().getTitle().equals(expectedTitle)) {
+        if (event.getView().title().equals(expectedTitle)) {
             event.setCancelled(true);
 
             if (!item.getItemMeta().hasDisplayName()) return;
@@ -32,7 +31,6 @@ public class InventoryListener implements Listener {
             String displayName = item.getItemMeta().getDisplayName();
             DatabaseManager databaseManager = SmasherMCLanguageAPI.getDatabaseManager();
 
-            // Verwende den LanguageManager für die aktuelle Sprache-Prüfung
             String currentLanguageText = languageManager.getMessage(player, "current-language");
             if (displayName.contains(currentLanguageText)) {
                 player.sendMessage(languageManager.getMessage(player, "already-selected"));
@@ -46,12 +44,10 @@ public class InventoryListener implements Listener {
             if (languageId != -1) {
                 databaseManager.setPlayerLanguage(player, languageId);
 
-                // Verwende den LanguageManager mit Platzhalter für die Erfolgsmeldung
                 player.sendMessage(languageManager.getMessage(player, "language-changed", "language", languageName));
 
                 player.closeInventory();
             } else {
-                // Verwende den LanguageManager für die Fehlermeldung
                 player.sendMessage(languageManager.getMessage(player, "language-error"));
             }
         }

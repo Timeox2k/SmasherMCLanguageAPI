@@ -26,14 +26,12 @@ public class language_command implements CommandExecutor {
         List<DatabaseManager.Language> languages = databaseManager.getAllLanguages();
         int currentLanguage = databaseManager.getPlayerLanguage(player);
 
-        // Korrigierte Zeile - entferne die zusätzliche Klammer
         Inventory inventory = Bukkit.createInventory(null, 9, languageManager.getMessage(player, "inventory-title"));
 
         int slot = 0;
         for (DatabaseManager.Language language : languages) {
             Material material = (language.getId() == currentLanguage) ? Material.ENCHANTED_BOOK : Material.PAPER;
 
-            // Verwende den LanguageManager für alle Texte
             String currentLanguageText = languageManager.getMessage(player, "current-language");
             String displayName = (language.getId() == currentLanguage) ?
                     "§a" + language.getInternationalName() + " §7" + currentLanguageText :
