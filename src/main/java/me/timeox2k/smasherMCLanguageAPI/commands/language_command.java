@@ -37,8 +37,13 @@ public class language_command implements CommandExecutor {
                     "§a" + language.getInternationalName() + " §7" + currentLanguageText :
                     "§6" + language.getInternationalName();
 
-            String clickToSelectText = languageManager.getMessage(player, "messages.click-to-select");
-            ItemBuilder item = new ItemBuilder(material).setName(displayName).addLore(clickToSelectText);
+            ItemBuilder item = new ItemBuilder(material).setName(displayName);
+
+            if(language.getId() != currentLanguage) {
+                String clickToSelectText = languageManager.getMessage(player, "messages.click-to-select");
+
+                item.addLore(clickToSelectText);
+            }
 
             if (language.getId() == currentLanguage) {
                 String alreadySelectedLore = languageManager.getMessage(player, "messages.already-selected-lore");
