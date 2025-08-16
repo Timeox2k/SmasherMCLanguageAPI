@@ -1,0 +1,8 @@
+name: SmasherMCLanguageAPI
+version: '1.0-SNAPSHOT'
+main: me.timeox2k.smasherMCLanguageAPI.SmasherMCLanguageAPI
+api-version: '1.21'
+load: STARTUP
+commands:
+  language:
+    aliases: [lang]
