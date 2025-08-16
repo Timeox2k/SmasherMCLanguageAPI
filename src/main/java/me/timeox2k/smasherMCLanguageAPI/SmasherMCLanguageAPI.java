@@ -2,6 +2,7 @@ package me.timeox2k.smasherMCLanguageAPI;
 
 import me.timeox2k.smasherMCLanguageAPI.commands.language_command;
 import me.timeox2k.smasherMCLanguageAPI.listeners.InventoryListener;
+import me.timeox2k.smasherMCLanguageAPI.listeners.PlayerListener;
 import me.timeox2k.smasherMCLanguageAPI.manager.DatabaseManager;
 import me.timeox2k.smasherMCLanguageAPI.manager.LanguageManager;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,6 +20,7 @@ public final class SmasherMCLanguageAPI extends JavaPlugin {
         getCommand("language").setExecutor(new language_command());
 
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         final FileConfiguration config = getConfig();
 

@@ -21,9 +21,10 @@ public class InventoryListener implements Listener {
 
         LanguageManager languageManager = SmasherMCLanguageAPI.getLanguageManager();
 
-        String expectedTitle = languageManager.getMessage(player, "inventory-title");
+        String expectedTitle = languageManager.getMessage(player, "messages.inventory-title");
 
-        if (event.getView().title().equals(expectedTitle)) {
+
+        if (event.getView().getTitle().contains(expectedTitle)) {
             event.setCancelled(true);
 
             if (!item.getItemMeta().hasDisplayName()) return;
@@ -31,9 +32,9 @@ public class InventoryListener implements Listener {
             String displayName = item.getItemMeta().getDisplayName();
             DatabaseManager databaseManager = SmasherMCLanguageAPI.getDatabaseManager();
 
-            String currentLanguageText = languageManager.getMessage(player, "current-language");
+            String currentLanguageText = languageManager.getMessage(player, "messages.current-language");
             if (displayName.contains(currentLanguageText)) {
-                player.sendMessage(languageManager.getMessage(player, "already-selected"));
+                player.sendMessage(languageManager.getMessage(player, "messages.already-selected"));
                 return;
             }
 
@@ -44,11 +45,11 @@ public class InventoryListener implements Listener {
             if (languageId != -1) {
                 databaseManager.setPlayerLanguage(player, languageId);
 
-                player.sendMessage(languageManager.getMessage(player, "language-changed", "language", languageName));
+                player.sendMessage(languageManager.getMessage(player, "messages.language-changed", "language", languageName));
 
                 player.closeInventory();
             } else {
-                player.sendMessage(languageManager.getMessage(player, "language-error"));
+                player.sendMessage(languageManager.getMessage(player, "messages.language-error"));
             }
         }
     }

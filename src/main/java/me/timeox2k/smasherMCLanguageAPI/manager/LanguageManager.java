@@ -88,12 +88,41 @@ public class LanguageManager {
 
     public String getMessage(String languageName, String key) {
         FileConfiguration langConfig = languageFiles.get(languageName.toLowerCase());
-        if (langConfig != null) {
-            return langConfig.getString("messages." + key, "Message not found: " + key);
-        }
-        return languageFiles.get("english").getString("messages." + key, "Message not found: " + key);
-    }
 
+        if (langConfig != null) {
+            String result = null;
+
+            if (langConfig.isConfigurationSection(key)) {
+                result = langConfig.getString(key + ".name", null);
+            } else {
+                result = langConfig.getString(key, null);
+            }
+
+            if (result == null) {
+                result = "Message not found: " + key;
+            }
+
+            return result;
+        }
+
+        FileConfiguration englishConfig = languageFiles.get("english");
+        if (englishConfig != null) {
+            String result = null;
+
+            if (englishConfig.isConfigurationSection(key)) {
+                result = englishConfig.getString(key + ".name", null);
+            } else {
+                result = englishConfig.getString(key, null);
+            }
+
+            if (result == null) {
+                result = "Message not found: " + key;
+            }
+            return result;
+        }
+
+        return "Message not found: " + key;
+    }
     public String getMessage(Player player, String key, String... placeholders) {
         String message = getMessage(player, key);
         for (int i = 0; i < placeholders.length; i += 2) {
