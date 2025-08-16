@@ -112,7 +112,7 @@ public class DatabaseManager {
             statement.setInt(3, languageId);
             statement.executeUpdate();
 
-            LanguageUpdateEvent languageUpdateEvent = new LanguageUpdateEvent(getAllLanguages().get(languageId - 1).getInternationalName());
+            LanguageUpdateEvent languageUpdateEvent = new LanguageUpdateEvent(getAllLanguages().get(languageId - 1).getInternationalName(), player);
             Bukkit.getPluginManager().callEvent(languageUpdateEvent);
         } catch (SQLException e) {
             e.printStackTrace();
