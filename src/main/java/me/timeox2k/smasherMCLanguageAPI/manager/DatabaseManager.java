@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import me.timeox2k.smasherMCLanguageAPI.SmasherMCLanguageAPI;
 import me.timeox2k.smasherMCLanguageAPI.events.LanguageUpdateEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -35,7 +36,7 @@ public class DatabaseManager {
     private void createTables() {
         String selectedLanguageTable = "CREATE TABLE IF NOT EXISTS selected_language (" + "uuid VARCHAR(36) NOT NULL PRIMARY KEY, " + "name VARCHAR(16) NOT NULL, " + "language INT DEFAULT 0" + ")";
 
-        String languagesTable = "CREATE TABLE IF NOT EXISTS languages (" + "id INT AUTO_INCREMENT PRIMARY KEY, " + "international_name VARCHAR(50) NOT NULL" + ")";
+        String languagesTable = "CREATE TABLE IF NOT EXISTS languages (" + "id INT AUTO_INCREMENT PRIMARY KEY, " + "international_name VARCHAR(50) NOT NULL, " + "material VARCHAR(16) NOT NULL" + ")";
 
         try (Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement()) {
 
@@ -51,7 +52,7 @@ public class DatabaseManager {
 
     private void insertDefaultLanguages(Connection connection) throws SQLException {
         String checkSql = "SELECT COUNT(*) FROM languages";
-        String insertSql = "INSERT INTO languages (international_name) VALUES (?)";
+        String insertSql = "INSERT INTO languages (international_name, material) VALUES (?, ?)";
 
         try (Statement checkStatement = connection.createStatement(); ResultSet rs = checkStatement.executeQuery(checkSql)) {
 
@@ -59,9 +60,11 @@ public class DatabaseManager {
             if (rs.getInt(1) == 0) {
                 try (PreparedStatement insertStatement = connection.prepareStatement(insertSql)) {
                     insertStatement.setString(1, "German");
+                    insertStatement.setString(2, "REPEATER");
                     insertStatement.executeUpdate();
 
                     insertStatement.setString(1, "English");
+                    insertStatement.setString(2, "LECTERN");
                     insertStatement.executeUpdate();
                 }
             }
@@ -88,12 +91,12 @@ public class DatabaseManager {
 
     public List<Language> getAllLanguages() {
         List<Language> languages = new ArrayList<>();
-        String sql = "SELECT id, international_name FROM languages ORDER BY id";
+        String sql = "SELECT id, international_name, material FROM languages ORDER BY id";
 
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                languages.add(new Language(resultSet.getInt("id"), resultSet.getString("international_name")));
+                languages.add(new Language(resultSet.getInt("id"), resultSet.getString("international_name"), Material.valueOf(resultSet.getString("material"))));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -162,10 +165,15 @@ public class DatabaseManager {
     public static class Language {
         private final int id;
         private final String internationalName;
-
-        public Language(int id, String internationalName) {
+        private final Material itemMaterial;
+        public Language(int id, String internationalName, Material itemMaterial ) {
             this.id = id;
             this.internationalName = internationalName;
+            this.itemMaterial = itemMaterial;
+        }
+
+        public Material getItemMaterial() {
+            return itemMaterial;
         }
 
         public int getId() {

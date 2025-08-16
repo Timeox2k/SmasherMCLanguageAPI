@@ -30,7 +30,7 @@ public class language_command implements CommandExecutor {
 
         int slot = 0;
         for (DatabaseManager.Language language : languages) {
-            Material material = (language.getId() == currentLanguage) ? Material.ENCHANTED_BOOK : Material.PAPER;
+            Material material = (language.getId() == currentLanguage) ? Material.GREEN_CONCRETE : language.getItemMaterial();
 
             String currentLanguageText = languageManager.getMessage(player, "messages.current-language");
             String displayName = (language.getId() == currentLanguage) ?
