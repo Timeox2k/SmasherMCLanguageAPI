@@ -51,7 +51,7 @@ public class LanguageManager {
         if (fileName.equals("german.yml")) {
             config.set("messages.language-changed", "§aSpache erfolgreich zu {language} geändert!");
             config.set("messages.language-error", "§cFehler: Sprache konnte nicht geändert werden!");
-            config.set("messages.already-selected", "§7Du hast bereits diese Sprache ausgewählt!");
+            config.set("messages.already-selected", "§7Du hast diese Sprache bereits ausgewählt.!");
             config.set("messages.current-language", "(Aktuelle Sprache)");
             config.set("messages.inventory-title", "§6Wähle deine neue Sprache");
             config.set("messages.click-to-select", "§7Klicke um diese Sprache auszuwählen");
