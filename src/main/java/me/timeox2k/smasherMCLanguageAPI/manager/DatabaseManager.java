@@ -77,7 +77,7 @@ public class DatabaseManager {
         try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, player.getUniqueId().toString());
             statement.setString(2, player.getName());
-            statement.setInt(3, 1);
+            statement.setInt(3, 2);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
