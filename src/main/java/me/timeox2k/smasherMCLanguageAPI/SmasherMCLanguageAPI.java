@@ -24,9 +24,9 @@ public final class SmasherMCLanguageAPI extends JavaPlugin {
 
         final FileConfiguration config = getConfig();
 
-        getConfig().addDefault("MySQL.host", "localhost");
-        getConfig().addDefault("MySQL.username", "root");
-        getConfig().addDefault("MySQL.password", "password");
+        config.addDefault("MySQL.host", "localhost");
+        config.addDefault("MySQL.username", "root");
+        config.addDefault("MySQL.password", "password");
         config.options().copyDefaults(true);
         saveConfig();
 
