@@ -4,9 +4,14 @@ import com.velocitypowered.api.proxy.Player;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import dev.dejvokep.boostedyaml.YamlDocument;
+import me.timeox2k.smasherMCLanguageAPI.SmasherMCLanguageAPI;
+import me.timeox2k.smasherMCLanguageAPI.manager.DatabaseManager;
 import me.timeox2k.smasherMCLanguageAPI.velocity.SmasherMCLanguageVelocityAPI;
+import org.bukkit.Material;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VelocityDatabaseManager {
     private final HikariDataSource dataSource;
@@ -30,6 +35,22 @@ public class VelocityDatabaseManager {
         return getPlayerLanguage(player.getUniqueId().toString());
     }
 
+    public List<DatabaseManager.Language> getAllLanguages() {
+        List<DatabaseManager.Language> languages = new ArrayList<>();
+        String sql = "SELECT id, international_name FROM languages ORDER BY id";
+
+        try (Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(sql); ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                languages.add(new DatabaseManager.Language(resultSet.getInt("id"), resultSet.getString("international_name"), Material.valueOf(resultSet.getString("material"))));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            SmasherMCLanguageAPI.getInstance().getLogger().severe("Failed to get languages: " + e.getMessage());
+        }
+
+        return languages;
+    }
 
     public int getPlayerLanguage(String uuid) {
         String sql = "SELECT language FROM selected_language WHERE uuid = ?";
